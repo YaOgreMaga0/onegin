@@ -10,6 +10,7 @@ int MyStrlen(char* str);
 char* MyStrcat(char* direction, char* add);
 char* MyStrNcat(char* direction, char* add, const int count);
 int MyAtoi(char* str);
+char* MyFgets(char* str, int count, FILE* stream);
 
 
 
@@ -25,6 +26,10 @@ int main()
     printf("%d\n",MyAtoi(inta)); //1234567
     printf("%s\n", MyStrcat(a,dobavochka1)); //abcdefghijklm
     printf("%s\n", MyStrNcat(a,dobavochka2, 4)); //abcdefghijklmn
+    char priem[27] ="";
+    FILE* test = fopen("test.txt","r");
+    MyFgets(priem, 26, test);
+    printf("%s\n", priem);
     return 0;
 }
 
@@ -107,5 +112,23 @@ char* MyStrNcat(char* direction, char* add, const int count)
             *(begin + i) = *((char*)(add + i - MyStrlen(direction)));
     }
     *(direction + MyStrlen(direction) + MyStrlen(add)+1) = '\0';
+    return begin;
+}
+
+
+
+
+char* MyFgets(char* str, int count, FILE* stream)
+{
+    char* begin = str;
+    int len = stream -> _charbuf;
+    printf("%d\n", len);
+    printf("%d \n",*(stream->_ptr + 10));
+    for(int i=0; i<(len > count ? count : len);i++)
+    {
+        *(begin+i*sizeof(char)) = *(stream -> _ptr + i);
+        if(*(begin+i*sizeof(char)) == '\0' || *(begin+i*sizeof(char)) == '\n')
+            return begin;
+    }
     return begin;
 }
