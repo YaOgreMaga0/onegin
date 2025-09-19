@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
@@ -11,6 +12,8 @@ char* MyStrcat(char* direction, char* add);
 char* MyStrNcat(char* direction, char* add, const int count);
 int MyAtoi(char* str);
 char* MyFgets(char* str, int count, FILE* stream);
+char* MyStrDup(char* str);
+ssize_t MyGetline(char **lineptr, size_t *n, FILE *stream);
 
 
 
@@ -28,8 +31,8 @@ int main()
     printf("%s\n", MyStrNcat(a,dobavochka2, 4)); //abcdefghijklmn
     char priem[27] ="";
     FILE* test = fopen("test.txt","r");
-    MyFgets(priem, 26, test);
-    printf("%s\n", priem);
+    MyPuts(MyFgets(priem, 27, test));
+    MyPuts(MyStrDup(a));
     return 0;
 }
 
@@ -118,17 +121,42 @@ char* MyStrNcat(char* direction, char* add, const int count)
 
 
 
-char* MyFgets(char* str, int count, FILE* stream)
+char* MyFgets(char* str, int count, FILE* stream)  //ya dvoe sutok pitalsa napisat , chisto sherez ukazatel FILE* i elementi ego structuri, prezhde chem sosed scazal mne chto mozhno uzat fgetc. iz principa na vihodnih poprobu napisat napramyy cherez FILE*, no ne seichas
 {
+    assert(str != NULL);
+    assert(stream != NULL);
     char* begin = str;
-    int len = stream -> _charbuf;
-    printf("%d\n", len);
-    printf("%d \n",*(stream->_ptr + 10));
-    for(int i=0; i<(len > count ? count : len);i++)
+    char c = fgetc(stream);
+    int i = 0;
+    while(count > 0 && c != EOF)
     {
-        *(begin+i*sizeof(char)) = *(stream -> _ptr + i);
-        if(*(begin+i*sizeof(char)) == '\0' || *(begin+i*sizeof(char)) == '\n')
-            return begin;
+        *(char*)((int)begin + i*sizeof(char)) = c;
+        c = fgetc(stream);
+        i++;
     }
+    return str;
+}
+
+
+char* MyStrDup(char* str)
+{
+    assert(str != NULL);
+    int len = 0;
+    while(*(str+len*sizeof(char)) != '\0')
+        len++;
+    char* begin = (char*)calloc(len+1, 1);
+    for(int i = 0; i < len; i++)
+        *(char *)((int)begin + i * sizeof(char)) = *(char *)((int)str + i * sizeof(char));
     return begin;
+}
+
+
+
+
+ssize_t MyGetline(char **lineptr, size_t *n, FILE *stream)
+{
+    assert(lineptr != NULL);
+    assert(*lineptr != NULL);
+    assert(n != NULL);
+    static char str[128] = {}; //vzyal 128 a ne 256 tk budu uzat v onegine, a tam slova korotkie
 }
