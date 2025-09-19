@@ -34,6 +34,7 @@ int main()
     PrintRhombusMatrix(mat[n], n); //0 2 0 4 5 6 0 8 0
     printf("%d %d\n", MaxRhombusMatrix(mat[n], n), MinRhombusMatrix(mat[n], n)); //8 2
 */
+    char* text = (char*)
     return 0;
 }
 

@@ -5,7 +5,11 @@
 void MyPuts(char* a);
 int MyStrchr(char *str, const char tofind);
 int MyStrlen(char* str);
-long long int MyAtoi(char* str);
+char* MyStrcat(char* direction, char* add);
+char* MyStrNcat(char* direction, char* add, const int count);
+int MyAtoi(char* str);
+char* MyFgets(char* str, int count, FILE* stream);
+char* MyStrDup(char* str);
 
 
 #endif

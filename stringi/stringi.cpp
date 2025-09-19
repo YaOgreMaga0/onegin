@@ -13,10 +13,8 @@ char* MyStrNcat(char* direction, char* add, const int count);
 int MyAtoi(char* str);
 char* MyFgets(char* str, int count, FILE* stream);
 char* MyStrDup(char* str);
-ssize_t MyGetline(char **lineptr, size_t *n, FILE *stream);
 
-
-
+/*
 int main()
 {
     char a [11] = "abcdefghij";
@@ -35,7 +33,7 @@ int main()
     MyPuts(MyStrDup(a));
     return 0;
 }
-
+*/
 void MyPuts(char* str)
 {
     assert(str != NULL);
@@ -148,15 +146,4 @@ char* MyStrDup(char* str)
     for(int i = 0; i < len; i++)
         *(char *)((int)begin + i * sizeof(char)) = *(char *)((int)str + i * sizeof(char));
     return begin;
-}
-
-
-
-
-ssize_t MyGetline(char **lineptr, size_t *n, FILE *stream)
-{
-    assert(lineptr != NULL);
-    assert(*lineptr != NULL);
-    assert(n != NULL);
-    static char str[128] = {}; //vzyal 128 a ne 256 tk budu uzat v onegine, a tam slova korotkie
 }
