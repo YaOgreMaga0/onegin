@@ -22,8 +22,8 @@ char* MyStrNcat(char* direction, char* add, const int count);
 int MyAtoi(char* str);
 char* MyFgets(char* str, int count, FILE* stream);
 char* MyStrDup(char* str);
-void FillIndex(char* buf, struct stroka* index, int len, int count);
-void MySort(struct stroka* index, int count);
-void FillMyBuf(struct stroka* index, FILE* output, int  count);
+void FillIndex(char* buf, struct stroka* index, int count);
+void MySort(struct stroka* index, int len);
+void FillMyBuf(struct stroka* index, FILE* output, int  len);
 
 #endif

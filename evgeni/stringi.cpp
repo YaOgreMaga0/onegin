@@ -144,33 +144,32 @@ char* MyStrDup(char* str)
 
 
 
-void FillIndex(char* buf, struct stroka* index, int len, int count)
+void FillIndex(char* buf, struct stroka* index, int count)
 {
-    int otrezok = 0;
-    index->string = buf;
+    int otrezok = 1;
     for(int i = 0; i < count; i++)
     {
-        printf("%c", *(char*)((size_t)buf + i*sizeof(char)));
-        if(*(char*)((size_t)buf + i*sizeof(char)) == '\0')
+        if(*buf == '\0')
         {
-            //printf("%d\n", otrezok);
-            index += sizeof(stroka);
-            index -> string = (char*)((size_t)buf + i*sizeof(char));
+            index -> string = (char*)((size_t)buf - (otrezok-1) * sizeof(char));
             index -> len = otrezok;
             otrezok = 0;
+            index += sizeof(stroka);
         }
         otrezok++;
+        buf+=sizeof(char);
     }
+
 }
 
 
-void MySort(struct stroka* index, int count)
+void MySort(struct stroka* index, int len)
 {
     assert(index != NULL);
-    assert(count > 0);
-    for(int i = 0; i < count;i++)
+    assert(len > 0);
+    for(int i = 0; i < len;i++)
     {
-        for(int j = 0; j < count-i-1;j++)
+        for(int j = 0; j < len-i-1;j++)
         {
             for(int k = 0; k < ((index + sizeof(stroka) * j)->len > (index + sizeof(stroka) * (j+1))->len ? (index + sizeof(stroka) * (j+1))->len : (index + sizeof(stroka) * j)->len); k++)
             {
@@ -187,12 +186,15 @@ void MySort(struct stroka* index, int count)
 }
 
 
-void FillMyBuf(struct stroka* index, FILE* output, int  count)
+void FillMyBuf(struct stroka* index, FILE* output, int  len)
 {
-    for(int i = 0; i < count; i++)
+    for(int i = 0; i < len; i++)
     {
-        const char* string = (char*)((size_t)(index + sizeof(stroka) * i)->string);
+        const char* string = index->string;
+        //printf("siski %s %d\n", string, index->len);
+        //fputs("shalawa\n", output); //proverka rabotosposobnosti
         fputs(string, output);
-        fputs("\n", output);
+        fputs("\n",output);
+        index+=sizeof(stroka);
     }
 }
