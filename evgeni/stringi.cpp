@@ -150,13 +150,49 @@ void FillIndex(char* buf, struct stroka* index, int len, int count)
     index->string = buf;
     for(int i = 0; i < count; i++)
     {
-        otrezok++;
+        printf("%c", *(char*)((size_t)buf + i*sizeof(char)));
         if(*(char*)((size_t)buf + i*sizeof(char)) == '\0')
         {
+            //printf("%d\n", otrezok);
             index += sizeof(stroka);
             index -> string = (char*)((size_t)buf + i*sizeof(char));
             index -> len = otrezok;
             otrezok = 0;
         }
+        otrezok++;
+    }
+}
+
+
+void MySort(struct stroka* index, int count)
+{
+    assert(index != NULL);
+    assert(count > 0);
+    for(int i = 0; i < count;i++)
+    {
+        for(int j = 0; j < count-i-1;j++)
+        {
+            for(int k = 0; k < ((index + sizeof(stroka) * j)->len > (index + sizeof(stroka) * (j+1))->len ? (index + sizeof(stroka) * (j+1))->len : (index + sizeof(stroka) * j)->len); k++)
+            {
+                if((int)(*(char*)((size_t)(index + sizeof(stroka) * j)->string + k*sizeof(char))) > (int)(*(char*)((size_t)(index + sizeof(stroka) * (j+1))->string + k*sizeof(char))))
+                {
+                    struct stroka swap = *(index + sizeof(stroka) * j);
+                    *(index + sizeof(stroka) * j) = *(index + sizeof(stroka) * (j+1));
+                    *(index + sizeof(stroka) * (j+1)) = swap;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+
+void FillMyBuf(struct stroka* index, FILE* output, int  count)
+{
+    for(int i = 0; i < count; i++)
+    {
+        const char* string = (char*)((size_t)(index + sizeof(stroka) * i)->string);
+        fputs(string, output);
+        fputs("\n", output);
     }
 }

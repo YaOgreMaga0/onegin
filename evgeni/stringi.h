@@ -1,6 +1,12 @@
 #ifndef STRINGI_H
 #define STRINGI_H
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 struct stroka
 {
     unsigned int len;
@@ -17,6 +23,7 @@ int MyAtoi(char* str);
 char* MyFgets(char* str, int count, FILE* stream);
 char* MyStrDup(char* str);
 void FillIndex(char* buf, struct stroka* index, int len, int count);
-
+void MySort(struct stroka* index, int count);
+void FillMyBuf(struct stroka* index, FILE* output, int  count);
 
 #endif
