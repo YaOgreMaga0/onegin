@@ -22,8 +22,9 @@ char* MyStrNcat(char* direction, char* add, const int count);
 int MyAtoi(char* str);
 char* MyFgets(char* str, int count, FILE* stream);
 char* MyStrDup(char* str);
-void FillIndex(char* buf, struct stroka* index, int count);
+void FillIndex(char* buf, struct stroka* index, long long int count);
 void MySort(struct stroka* index, int len);
 void FillMyBuf(struct stroka* index, FILE* output, int  len);
+int BackCompare(const void* a, const void* b);
 
 #endif
