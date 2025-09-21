@@ -1,11 +1,14 @@
-#ifndef STRINGI_H
-#define STRINGI_H
-
+#ifndef INDEXFUNC_H
+#define INDEXFUNC_H
+#define _GNU_SOURCE
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <math.h>
+#include <string.h>
 
 struct stroka
 {
@@ -14,17 +17,10 @@ struct stroka
 };
 
 
-void MyPuts(char* a);
-int MyStrchr(char *str, const char tofind);
-int MyStrlen(char* str);
-char* MyStrcat(char* direction, char* add);
-char* MyStrNcat(char* direction, char* add, const int count);
-int MyAtoi(char* str);
-char* MyFgets(char* str, int count, FILE* stream);
-char* MyStrDup(char* str);
 void FillIndex(char* buf, struct stroka* index, long long int count);
 void MySort(struct stroka* index, int len);
 void FillMyBuf(struct stroka* index, FILE* output, int  len);
 int BackCompare(const void* a, const void* b);
+unsigned int CountOfLines(const unsigned long long int cnt, FILE* text, char* buf);
 
 #endif

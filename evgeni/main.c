@@ -1,28 +1,16 @@
-#include "stringi.h"
+#include "IndexFunc.h"
 
 int main()
 {
     struct stat fileinf;
     FILE* text = fopen("onegin.txt", "r");
     FILE* output = fopen("output.txt", "w");
-    stat("text.txt", &fileinf);
+    stat("onegin.txt", &fileinf);
     const unsigned long long int cnt = fileinf.st_size;
     long long int count = 0;
     char* buf = (char*)calloc(cnt, sizeof(char));
     char* bufcopy = buf;
-    int unsigned n = 0;  //количество строк
-    char c;
-    for(long long int i = 0; i < cnt; i++)
-    {
-        c = fgetc(text);
-        if(c == '\n')
-        {
-            c = '\0';
-            n++;
-        }
-        *buf = c;
-        buf++;
-    }
+    int unsigned n = CountOfLines(cnt, text, buf);  //количество строк
     count =cnt - n;
     const int len = n;
     struct stroka index[len] = {};
