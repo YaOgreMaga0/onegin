@@ -1,9 +1,9 @@
-/matrix/ #подводящие упражнения
+/matrix/
 
 /stringi/
 
-/.vscode/ #вскод
+/.vscode/
 
-*.o  #объектники
+*.o
 
-*.exe    #  экзекьют
+*.exe
