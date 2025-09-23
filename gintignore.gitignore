@@ -1,5 +1,10 @@
-matrix/   #подводящие упражнения
-stringi/
-IndexFunc.o  #объектники
-main.o
-EvgOneg.exe    #  экзекьют
+/matrix/   #подводящие упражнения
+/stringi/
+
+
+*.o  #объектники
+
+
+
+
+*.exe    #  экзекьют
