@@ -35,14 +35,14 @@ int main()
     FillIndex(buf, index, symbolscnt - lencount);   //вычитаю lencount так как fopen удаляет /r
 
     MySort(index, lencount);
-    printf("proverka1\n");
+    fprintf(stderr, "proverka1\n");
     FillOutput(index, output1, lencount);
-    printf("proverka2\n");
+    fprintf(stderr, "proverka2\n");
 
     qsort(index, lencount, sizeof(struct stroka), BackCompare);
-    printf("proverka3\n");
+    fprintf(stderr, "proverka3\n");
     FillOutput(index, output2, lencount);
-    printf("proverka4\n");
+    fprintf(stderr, "proverka4\n");
 
     fclose(text);
     fclose(output1);
