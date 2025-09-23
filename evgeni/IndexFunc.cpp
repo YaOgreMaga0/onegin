@@ -1,18 +1,6 @@
 #include "IndexFunc.h"
 
-FILE* FileOpen(char* name)
-{
-    assert(name != NULL);
-    FILE* text = fopen(name, "r");
-    if(text == NULL)
-    {
-        printf("incorrect file name\n");
-        abort();
-    }
-    return text;
-}
-
-unsigned long long int CountOfSymbols(char* name)
+unsigned long long int CountOfSymbols(const char* name)
 {
     assert(name != NULL);
     struct stat fileinf;
@@ -20,7 +8,7 @@ unsigned long long int CountOfSymbols(char* name)
     unsigned long long int cnt = fileinf.st_size;
     if(cnt == 0)
     {
-        printf("file is empty");
+        printf("file is empty\n");
         abort();
     }
     return cnt;
@@ -37,12 +25,6 @@ void FillIndex(char* buf, struct stroka* index, long long int count)
     {
         if(*buf == '\0')
         {
-            //type *arr
-            //arr + 1 <=> (size_t)arr + 1 * sizeof(type)
-            //*(arr + 1) <=> arr[1]
-            //|0|0|0|0|0|0|0|0|
-            //index[n].string = ...
-            //index++ и index->stroka = ...
             index[n].string = buf - (otrezok - 1);
             index[n].len = otrezok;
             n++;
@@ -62,28 +44,18 @@ void MySort(struct stroka* index, int len)
     {
         for(int j = 0; j < len-i; j++)
         {
-            char* str1 = index[j].string;
-            char* str2 = index[j+1].string;
-            int len1 = index[j].len;
-            int len2 = index[j+1].len;
-            for(int k = 0; k < (len1 > len2 ? len2 : len1); k++)
+            if(IndexCompare(index + j, index + j + 1) != -1)
             {
-                if((int)str1[k] > (int)str2[k])
-                {
-                    struct stroka swap = index[j];
-                    index[j] = index[j + 1];
-                    index[j + 1] = swap;
-                    break;
-                }
-                if((int)str1[k] < (int)str2[k])
-                    break;
+                struct stroka swap = index[j];
+                index[j] = index[j + 1];
+                index[j + 1] = swap;
             }
         }
     }
 }
 
 
-void FillMyBuf(struct stroka* index, FILE* output, int  len)
+void FillOutput(struct stroka* index, FILE* output, int  len)
 {
     for(int i = 0; i < len; i++)
     {
@@ -101,21 +73,33 @@ int BackCompare(const void* a, const void* b)
     struct stroka second = *(stroka*)(b);
     int len1 = first.len;
     int len2 = second.len;
-    char* str1 = first.string;
-    char* str2 = second.string;
-    for(int i = 0; i < (len1 > len2 ? len2 : len1); i++)
+    char* char1 = first.string + len1;
+    char* char2 = second.string + len2;
+    while(len1 > 0 && len2 > 0)
     {
-        int char1 = (int)(str1[len1 - i - 1]);
-        int char2 = (int)(str2[len2 - i - 1]);
-        if((char1 < char2) && isalpha(char1) && isalpha(char2))
+        char1--;
+        char2--;
+        while(!isalpha(*char1) && len1 > 0)
+        {
+            len1--;
+            char1--;
+        }
+        while(!isalpha(*char2) && len2 > 0)
+        {
+            len2--;
+            char2--;
+        }
+        if(tolower(*char1) < tolower(*char2))
             return -1;
-        if((char1 > char2) && isalpha(char1) && isalpha(char2))
+        if(tolower(*char1) > tolower(*char2))
             return 1;
+        len1--;
+        len2--;
     }
-    return 1;
+    return 0;
 }
 
-unsigned int CountOfLines(const unsigned long long int cnt, FILE* text, char* buf)
+unsigned int FillBuf(unsigned long long int cnt, FILE* text, char* buf)
 {
     assert(cnt > 0);
     assert(text != NULL);
@@ -136,3 +120,35 @@ unsigned int CountOfLines(const unsigned long long int cnt, FILE* text, char* bu
     return n;
 }
 
+
+int IndexCompare(const void* a, const void* b)
+{
+    const stroka* str1 = (const stroka*)a;
+    const stroka* str2 = (const stroka*)b;
+    char* char1 = str1->string;
+    char* char2 = str2->string;
+    int len1 = str1->len;
+    int len2 = str2->len;
+    while(len1 > 0 && len2 > 0)
+    {
+        while(!isalpha(*char1) && len1 > 0)
+        {
+            len1--;
+            char1++;
+        }
+        while(!isalpha(*char2) && len2 > 0)
+        {
+            len2--;
+            char2++;
+        }
+        if(tolower(*char1) > tolower(*char2))
+            return 1;
+        if(tolower(*char1) < tolower(*char2))
+            return -1;
+        char1++;
+        char2++;
+        len1--;
+        len2--;
+    }
+    return 0;
+}

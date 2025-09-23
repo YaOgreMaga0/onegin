@@ -1,34 +1,53 @@
 #include "IndexFunc.h"
 
+
 int main()
 {
-    char name[11] = "onegin.txt";
+    const char* source = "onegin.txt";
+    const char* result1 = "output1.txt";
+    const char* result2 = "output2.txt";
     struct stat fileinf;
-    stat(name, &fileinf);
-    const unsigned long long int cnt = CountOfSymbols(name);
-    char* buf = (char*)calloc(cnt, sizeof(buf));
-    FILE* text = FileOpen(name);
-    FILE* output = fopen("output.txt", "w");
-    int unsigned n = CountOfLines(cnt, text, buf);  //количество строк
+    stat(source, &fileinf);
+    unsigned long long int symbolscnt = CountOfSymbols(source);
+    char* buf = (char*)calloc(symbolscnt, sizeof(buf));
+    if( buf == NULL)
+    {
+        printf("memory allocation error\n");
+        return 1;
+    }
+    FILE* text = fopen(source, "r");
+    FILE* output1 = fopen(result1, "w");
+    FILE* output2 = fopen(result2, "w");
 
+    if(text == NULL || output1 == NULL || output2 == NULL)
+    {
+        printf("Error file open\n");
+        return 1;
+    }
 
-    long long int count = cnt - n;
-    const int len = n;
-    struct stroka index[len] = {};
-    FillIndex(buf, index, count);
+    int unsigned lencount = FillBuf(symbolscnt, text, buf);
 
+    stroka* index = (stroka*)calloc(lencount, sizeof(stroka));
+    if(index == NULL)
+    {
+        printf("memory allocation error\n");
+        return 1;
+    }
+    FillIndex(buf, index, symbolscnt - lencount);   //вычитаю lencount так как fopen удаляет /r
 
-    MySort(index, len);
-    FillMyBuf(index, output, len);
-    fputs("\n\n\n\n\n\n\n\n\n", output);
+    printf("proverka1\n");
+    MySort(index, lencount);
+    printf("proverka2\n");
+    FillOutput(index, output1, lencount);
+    printf("proverka3\n");
 
-
-    qsort(index, len, sizeof(struct stroka), BackCompare);
-    FillMyBuf(index, output, len);
-
+    qsort(index, lencount, sizeof(struct stroka), BackCompare);
+    printf("proverka4\n");
+    FillOutput(index, output2, lencount);
 
     fclose(text);
-    fclose(output);
+    fclose(output1);
+    fclose(output2);
     free(buf);
     return 0;
 }

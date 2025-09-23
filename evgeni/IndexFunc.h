@@ -17,12 +17,12 @@ struct stroka
     char* string;
 };
 
-FILE* FileOpen(char* name);
-unsigned long long int CountOfSymbols(char* name);
+unsigned long long int CountOfSymbols(const char* name);
 void FillIndex(char* buf, struct stroka* index, long long int count);
 void MySort(struct stroka* index, int len);
-void FillMyBuf(struct stroka* index, FILE* output, int  len);
+void FillOutput(struct stroka* index, FILE* output, int  len);
 int BackCompare(const void* a, const void* b);
-unsigned int CountOfLines(const unsigned long long int cnt, FILE* text, char* buf);
+unsigned int FillBuf(const unsigned long long int cnt, FILE* text, char* buf);
+int IndexCompare(const void* a, const void* b);
 
 #endif
