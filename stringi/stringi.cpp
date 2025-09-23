@@ -11,6 +11,7 @@
 /*
 int main()
 {
+    bebebebebebebebebebebebebebebe;
     char a [11] = "abcdefghij";
     char inta[9] = "01234567";
     char dobavochka1[4] = "klm";  //Leonid Modestovich))))
