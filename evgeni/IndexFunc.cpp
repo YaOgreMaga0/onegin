@@ -105,8 +105,8 @@ int BackCompare(const void* a, const void* b)
     char* str2 = second.string;
     for(int i = 0; i < (len1 > len2 ? len2 : len1); i++)
     {
-        int char1 = (int)str1[len1 - i - 1];
-        int char2 = (int)str2[len2 - i - 1];
+        int char1 = (int)(str1[len1 - i - 1]);
+        int char2 = (int)(str2[len2 - i - 1]);
         if((char1 < char2) && isalpha(char1) && isalpha(char2))
             return -1;
         if((char1 > char2) && isalpha(char1) && isalpha(char2))
