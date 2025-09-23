@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
 
 struct stroka
 {
@@ -16,7 +17,8 @@ struct stroka
     char* string;
 };
 
-
+FILE* FileOpen(char* name);
+unsigned long long int CountOfSymbols(char* name);
 void FillIndex(char* buf, struct stroka* index, long long int count);
 void MySort(struct stroka* index, int len);
 void FillMyBuf(struct stroka* index, FILE* output, int  len);
