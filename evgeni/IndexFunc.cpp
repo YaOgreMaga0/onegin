@@ -61,18 +61,18 @@ unsigned int FillBuf(unsigned long long int cnt, FILE* text, char* buf)
     assert(buf != NULL);
 
     char c = '\0';
-    unsigned int n = 0;
+    unsigned int CountOfLines = 0;
     for(long long int i = 0; i < cnt; i++)
     {
         c = fgetc(text);
         if(c == '\n')
         {
             c = '\0';
-            n++;
+            CountOfLines++;
         }
         *buf = c;
         buf++;
     }
 
-    return n;
+    return CountOfLines;
 }
