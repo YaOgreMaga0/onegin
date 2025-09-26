@@ -1,5 +1,5 @@
-#include "IndexFunc.h"
 #include "StringFunc.h"
+#include "IndexFunc.h"
 
 unsigned long long int CountOfSymbols(const char* name)
 {
@@ -9,48 +9,50 @@ unsigned long long int CountOfSymbols(const char* name)
     stat(name, &fileinf);
     unsigned long long int cnt = fileinf.st_size;
     if(cnt == 0)
-    {
-        printf("file is empty\n");
         return -1;
-    }
 
     return cnt;
 }
 
-void FillIndex(char* buf, struct stroka* index, long long int count)
+void FillIndex(char* buf, struct Line* index, long long int count)
 {
     assert(buf != NULL);
     assert(index != NULL);
     assert(count > 0);
 
-    int otrezok = 1, n = 0;
+    int LineLen = 1, n = 0;
     for(int i = 0; i < count; i++)
     {
         if(*buf == '\0')
         {
-            index[n].string = buf - (otrezok - 1);
-            index[n].len = otrezok;
+            index[n].string = buf - (LineLen - 1);
+            index[n].len = LineLen;
             n++;
-            otrezok = 0;
+            LineLen = 0;
         }
-        otrezok++;
+        LineLen++;
         buf += sizeof(char);
     }
 }
 
 
-void FillOutput(struct stroka* index, FILE* output, int  len)
+void FillOutput(struct Line* index, const char* filename, int  len)
 {
     assert(index != NULL);
-    assert(output != NULL);
+    assert(filename != NULL);
     assert(len > 0);
+
+    FILE* outfile = fopen(filename, "w");
+    if(outfile == NULL)
+        printf("Error file open\n");
 
     for(int i = 0; i < len; i++)
     {
         const char* string = index[i].string;
-        fputs(string, output);
-        fputs("\n", output);
+        fputs(string, outfile);
+        fputs("\n", outfile);
     }
+    fclose(outfile);
 }
 
 
@@ -62,16 +64,14 @@ unsigned int FillBuf(unsigned long long int cnt, FILE* text, char* buf)
 
     char c = '\0';
     unsigned int CountOfLines = 0;
+    size_t freadcnt = fread(buf, cnt, sizeof(char), text);
     for(long long int i = 0; i < cnt; i++)
     {
-        c = fgetc(text);
-        if(c == '\n')
+        if(buf[i] == '\n')
         {
-            c = '\0';
+            buf[i] = '\0';
             CountOfLines++;
         }
-        *buf = c;
-        buf++;
     }
 
     return CountOfLines;

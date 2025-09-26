@@ -13,7 +13,7 @@
 
 
 
-struct stroka
+struct Line
 {
     unsigned int len;
     char* string;
@@ -22,8 +22,8 @@ struct stroka
 
 int BackCompare(const void* a, const void* b);
 int IndexCompare(const void* a, const void* b);
-void MySort(struct stroka* index, int len);
+void MySort(struct Line* index, int len);
 int StrCmpIgnorPunctuation(char* str1, char* str2, int len1, int len2, int mode);
 
 
-#endif
+#endif //STRINGFUNC_H
