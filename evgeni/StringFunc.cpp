@@ -86,7 +86,14 @@ void BubleQsort(void* begin, size_t count, size_t size, int(*CompFunc)(const voi
     {
         for(size_t j = 0; j < count - i; j++)
         {
-            if(CompFunc((begin + j * size), (begin + (j + 1) * size)) != -1)
+            int res = CompFunc((begin + j * size), (begin + (j + 1) * size));
+            if(res != -1 && res != 1 && res != 0)
+            {
+                printf("Incorrect comprator\n");
+                i = count;
+                j = 1;
+            }
+            if(res != -1)
             {
                 for(size_t i = 0; i < size; i++)
                 {
