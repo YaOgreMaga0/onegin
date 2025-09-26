@@ -76,3 +76,25 @@ int StrCmpIgnorPunctuation(char* char1, char* char2, int len1, int len2, int mod
     }
     return 0;
 }
+
+
+void BubleQsort(void* begin, size_t count, size_t size, int(*CompFunc)(const void* a, const void* b))
+{
+    assert(begin != NULL);
+
+    for(size_t i = 1; i < count; i++)
+    {
+        for(size_t j = 0; j < count - i; j++)
+        {
+            if(CompFunc((begin + j * size), (begin + (j + 1) * size)) != -1)
+            {
+                for(size_t i = 0; i < size; i++)
+                {
+                    char swap = *((char*)(begin + j * size + i));
+                    *((char*)(begin + j * size + i)) = *((char*)(begin + j * size + i + size));
+                    *((char*)(begin + j * size + i + size)) = swap;
+                }
+            }
+        }
+    }
+}

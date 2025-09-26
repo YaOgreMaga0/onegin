@@ -24,6 +24,7 @@ int BackCompare(const void* a, const void* b);
 int IndexCompare(const void* a, const void* b);
 void MySort(struct Line* index, int len);
 int StrCmpIgnorPunctuation(char* str1, char* str2, int len1, int len2, int mode);
+void BubleQsort(void* begin, size_t count, size_t size, int(*CompFunc)(const void* a, const void* b));
 
 
 #endif //STRINGFUNC_H

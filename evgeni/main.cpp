@@ -16,7 +16,7 @@ int main()
     FillOutput(Inf.index, result1, Inf.CntLines); //Fill text in output1
     fprintf(stderr, "check2\n");
 
-    qsort(Inf.index, Inf.CntLines, sizeof(struct Line), BackCompare); //qsort
+    BubleQsort(Inf.index, Inf.CntLines, sizeof(struct Line), BackCompare); //qsort
     fprintf(stderr, "check3\n");
     FillOutput(Inf.index, result2, Inf.CntLines); //Fill text in output2
     fprintf(stderr, "check4\n");
