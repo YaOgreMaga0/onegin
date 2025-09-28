@@ -5,30 +5,22 @@ int BackCompare(const void* a, const void* b)
     assert(a != NULL);
     assert(b != NULL);
 
-    struct Line first = *(Line*)(a);
-    struct Line second = *(Line*)(b);
-    int len1 = first.len;
-    int len2 = second.len;
-    char* char1 = first.string + len1;
-    char* char2 = second.string + len2;
+    const Line* str1 = (const Line*)(a);
+    const Line* str2 = (const Line*)(b);
 
-    return StrCmpIgnorPunctuation(char1 - 2, char2 - 2, len1, len2, -1);
+    return StrCmpIgnorPunctuation(str1, str2, -1);
 }
 
 
-int IndexCompare(const void* a, const void* b)
+int FrontCompare(const void* a, const void* b)
 {
     assert(a != NULL);
     assert(b != NULL);
 
     const Line* str1 = (const Line*)a;
     const Line* str2 = (const Line*)b;
-    char* char1 = str1->string;
-    char* char2 = str2->string;
-    int len1 = str1->len;
-    int len2 = str2->len;
 
-    return StrCmpIgnorPunctuation(char1, char2, len1, len2, 1);
+    return StrCmpIgnorPunctuation(str1, str2, 1);
 }
 
 
@@ -36,14 +28,15 @@ void MySort(struct Line* index, int len)
 {
     assert(index != NULL);
     assert(len > 0);
-
     for(int i = 1; i < len; i++)
     {
         for(int j = 0; j < len-i; j++)
         {
-            if(IndexCompare(index + j, index + j + 1) == 1)
+            const Line* line1 = index + j;
+            const Line* line2 = index + j + 1;
+            if(FrontCompare(line1, line2) != -1)
             {
-                struct Line swap = index[j];
+                Line swap = index[j];
                 index[j] = index[j + 1];
                 index[j + 1] = swap;
             }
@@ -51,19 +44,36 @@ void MySort(struct Line* index, int len)
     }
 }
 
-int StrCmpIgnorPunctuation(char* char1, char* char2, int len1, int len2, int mode)
+int StrCmpIgnorPunctuation(const Line* line1, const Line* line2, int mode)
 {
+    assert(line1 != NULL);
+    assert(line2 != NULL);
+    assert(abs(mode) == 1);
+
+    int len1 = line1->len;
+    int len2 = line2->len;
+    char *char1 = line1->string;
+    char *char2 = line2->string;
+    if(mode == -1)
+    {
+        char1 += (len1 - 1);
+        char2 += (len2 - 1);
+    }
     while(len1 > 0 && len2 > 0)
     {
         while(!isalpha(*char1) && len1 > 0)
         {
             len1--;
             char1 += mode;
+            if((int)(*char1) == 13 || (int)(*char1) == 10)
+                return 0;
         }
         while(!isalpha(*char2) && len2 > 0)
         {
             len2--;
             char2 += mode;
+            if((int)(*char2) == 13 || (int)(*char2) == 10)
+                return 0;
         }
         if(tolower(*char1) > tolower(*char2))
             return 1;

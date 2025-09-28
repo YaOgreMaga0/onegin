@@ -9,19 +9,32 @@ int main()
     const char* result1 = "output1.txt";
     const char* result2 = "output2.txt";
 
-    struct BufAndIndexInf Inf = FileReadAndMakeBuf(source); //Fill buffer and index array and return information about text
+    BufAndIndexInf Inf = FileReadAndMakeBuf(source); //Fill buffer and index array and return information about text
+    if(Inf.buf == NULL || Inf.CntLines == -1 || Inf.index == NULL)
+    {
+        printf("incorrect input file\n");
+        return 1;
+    }
 
-    MySort(Inf.index, Inf.CntLines); //First "straigth" sort
     fprintf(stderr, "check1\n");
-    FillOutput(Inf.index, result1, Inf.CntLines); //Fill text in output1
+    MySort(Inf.index, Inf.CntLines); //First "straigth" sort
     fprintf(stderr, "check2\n");
+    if(FillOutput(Inf.index, result1, Inf.CntLines) == 1) //Fill text in output1
+    {
+        printf("incorrect output file\n");
+        return 1;
+    }
+    fprintf(stderr, "check3\n");
 
     BubleQsort(Inf.index, Inf.CntLines, sizeof(struct Line), BackCompare); //qsort
-    fprintf(stderr, "check3\n");
-    FillOutput(Inf.index, result2, Inf.CntLines); //Fill text in output2
     fprintf(stderr, "check4\n");
+    if(FillOutput(Inf.index, result2, Inf.CntLines) == 1) //Fill text in output2
+    {
+        printf("incorrect output file\n");
+        return 1;
+    }
+    fprintf(stderr, "check5\n");
 
-    free(Inf.buf);
-    free(Inf.index);
+    MemoryFree(&Inf);
     return 0;
 }

@@ -4,14 +4,16 @@
 #include "StringFunc.h"
 #include "IndexFunc.h"
 
-struct BufAndIndexInf
+typedef struct BufAndIndexInf
 {
     char* buf;
     struct Line* index;
     int CntLines;
-};
+}BufAndIndexInf;
 
-struct BufAndIndexInf FileReadAndMakeBuf(const char* filename);
+BufAndIndexInf FileReadAndMakeBuf(const char* filename);
+void MemoryFree(BufAndIndexInf *Inf);
+
 
 
 #endif //FILEFUNC_H

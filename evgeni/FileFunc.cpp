@@ -25,3 +25,10 @@ struct BufAndIndexInf FileReadAndMakeBuf(const char* filename)
 
     return {buf, index, (int)linecount};
 }
+
+
+void MemoryFree(BufAndIndexInf *Inf)
+{
+    free(Inf->index);
+    free(Inf->buf);
+}

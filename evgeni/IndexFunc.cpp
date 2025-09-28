@@ -14,11 +14,10 @@ unsigned long long int CountOfSymbols(const char* name)
     return cnt;
 }
 
-void FillIndex(char* buf, struct Line* index, long long int count)
+FillIndex(char* buf, Line* index, long long int count)
 {
-    assert(buf != NULL);
-    assert(index != NULL);
-    assert(count > 0);
+    if(buf == NULL || index == NULL || count == 0)
+        return -1;
 
     int LineLen = 1, n = 0;
     for(int i = 0; i < count; i++)
@@ -36,7 +35,7 @@ void FillIndex(char* buf, struct Line* index, long long int count)
 }
 
 
-void FillOutput(struct Line* index, const char* filename, int  len)
+int FillOutput(struct Line* index, const char* filename, int  len)
 {
     assert(index != NULL);
     assert(filename != NULL);
@@ -44,7 +43,10 @@ void FillOutput(struct Line* index, const char* filename, int  len)
 
     FILE* outfile = fopen(filename, "w");
     if(outfile == NULL)
+    {
         printf("Error file open\n");
+        return 1;
+    }
 
     for(int i = 0; i < len; i++)
     {
@@ -53,14 +55,16 @@ void FillOutput(struct Line* index, const char* filename, int  len)
         fputs("\n", outfile);
     }
     fclose(outfile);
+    return 0;
 }
 
 
 unsigned int FillBuf(unsigned long long int cnt, FILE* text, char* buf)
 {
-    assert(cnt > 0);
     assert(text != NULL);
     assert(buf != NULL);
+    if (cnt == -1)
+        return -1;
 
     char c = '\0';
     unsigned int CountOfLines = 0;
